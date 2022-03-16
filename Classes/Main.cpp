@@ -1,13 +1,13 @@
 #include <iostream>
 #include <sstream>
-#include "Bat.h"
-#include "Ball.h"
-#include <cstdlib>
-#include <SFML/Graphics.hpp>
 
-void handlePlayerInput(Bat& bat);
-void handleBatCollision(Bat& bat, sf::Window& window, sf::Time& deltaTime);
-void handleBallCollision(Ball& ball, Bat& bat, sf::Window& window, sf::Time& deltaTime, int& score, int& lives);
+#include <SFML/Graphics.hpp>
+#include "Actor/Ball/Ball.h"
+#include "Actor/Player/Bat/Bat.h"
+
+void HandlePlayerInput(Bat& bat);
+void HandleBatCollision(Bat& bat, const sf::Window& window, const sf::Time& deltaTime);
+void HandleBallCollision(Ball& ball, Bat& bat, const sf::Window& window, const sf::Time& deltaTime, int& score, int& lives);
 
 int main()
 {
@@ -18,7 +18,7 @@ int main()
 
 	bool paused = true;
 
-	// Create videomode
+	// Create video-mode
 	sf::VideoMode videoMode(1920, 1080);
 
 	//Create and open window
@@ -42,7 +42,7 @@ int main()
 
 	// Retro style font
 	sf::Font font;
-	font.loadFromFile("fonts/Rubik-Black.ttf");
+    font.loadFromFile("../Fonts/Rubik-Black.ttf");
 
 	hud.setFont(font);
 	hud.setCharacterSize(75);
@@ -54,7 +54,7 @@ int main()
 	welcomeText.setFillColor(sf::Color::White);
 	welcomeText.setPosition(1020 / 2.0f, 1080 / 2.0f);
 
-	sf::Event event;
+	sf::Event event{};
 
 	while (window.isOpen()) {		
 
@@ -76,14 +76,14 @@ int main()
 		if (!paused) {
 
 			sf::Time deltaTime = clock.restart();
-			handleBallCollision(ball, bat, window, deltaTime, score, lives);
-			handleBatCollision(bat, window, deltaTime);
-			handlePlayerInput(bat);
+            HandleBallCollision(ball, bat, window, deltaTime, score, lives);
+            HandleBatCollision(bat, window, deltaTime);
+            HandlePlayerInput(bat);
 
 
 			if (lives < 1) {
-				ball.restartBall();
-				bat.restartBat();
+                ball.RestartBall();
+                bat.RestartBat();
 				score = 0;
 				lives = 3;
 				paused = true;
@@ -96,8 +96,8 @@ int main()
 
 		window.clear();
 		window.draw(hud);
-		window.draw(bat.getShape());
-		window.draw(ball.getShape());
+		window.draw(bat.GetShape());
+		window.draw(ball.GetShape());
 
 		if (paused) {
 			window.draw(welcomeText);
@@ -109,67 +109,69 @@ int main()
 	return 0;
 }
 
-void handlePlayerInput(Bat& bat) {
+void HandlePlayerInput(Bat& bat) {
 	// Handle player pressing and realising input
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-		bat.moveLeft();
+        bat.MoveLeft();
 	}
 	else {
-		bat.stopLeft();
+        bat.StopLeft();
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-		bat.moveRight();
+        bat.MoveRight();
 	}
 	else {
-		bat.stopRight();
+        bat.StopRight();
 	}
 }
 
-void handleBallCollision(Ball& ball, Bat& bat, sf::Window& window, sf::Time& deltaTime, int& score, int& lives) {
+void HandleBallCollision(Ball& ball, Bat& bat, const sf::Window& window, const sf::Time& deltaTime, int& score, int& lives) {
 
-	ball.update(deltaTime);
+    ball.Update(deltaTime);
 
 	// Handle the ball hitting bottom
-	if (ball.getShapePosition().top > window.getSize().y) {
+	if (ball.GetShapePosition().top > (float) window.getSize().y) {
 
-		ball.reboundBottom();
+        ball.ReboundBottom();
 		lives--;
 	}
 
 	// Handle the ball hitting top
-	if (ball.getShapePosition().top < 0) {
-		ball.reboundTop();
+	if (ball.GetShapePosition().top < 0) {
+        ball.ReboundTop();
 	}
 
 	// Handle the ball hitting sides
-	if (ball.getShapePosition().left < 0 || ball.getShapePosition().left + ball.getShapePosition().width > window.getSize().x) {
-		ball.reboundSides();
+	if (ball.GetShapePosition().left < 0 ||
+            ball.GetShapePosition().left + ball.GetShapePosition().width > (float) window.getSize().x) {
+        ball.ReboundSides();
 	}
 
 	// Handle the ball hitting the bat
-	if (ball.getShapePosition().intersects(bat.getShapePosition())) {
+	if (ball.GetShapePosition().intersects(bat.GetShapePosition())) {
 		// Reverse the ball and score
-		ball.reboundBat(score);
-		bat.ballCollision(score);
+        ball.ReboundBat(score);
+        bat.BallCollision(score);
 
 		score++;
 	}
 
-	// Restart the ball if its off screen
-	if (ball.getPosition().x < -100 || ball.getPosition().x > 1920 ||ball.getPosition().y < -100 || ball.getPosition().y > 1080) {
-		ball.restartBall();
+	// Restart the ball if its offscreen
+	if (ball.GetPosition().x < -100 || ball.GetPosition().x > 1920 || ball.GetPosition().y < -100 ||
+            ball.GetPosition().y > 1080) {
+        ball.RestartBall();
 	}
 }
 
-void handleBatCollision(Bat& bat, sf::Window& window, sf::Time& deltaTime) {
-	bat.update(deltaTime);
+void HandleBatCollision(Bat& bat, const sf::Window& window, const sf::Time& deltaTime) {
+    bat.Update(deltaTime);
 
 	// Handle bat hitting sides
-	if (bat.getShapePosition().left < 0) {
-		bat.setPosition(sf::Vector2f(1500, bat.getPosition().y));
+	if (bat.GetShapePosition().left < 0) {
+        bat.SetPosition(sf::Vector2f(1500, bat.GetPosition().y));
 	}
-	else if (bat.getShapePosition().left + bat.getShapePosition().width > window.getSize().x) {
-		bat.setPosition(sf::Vector2f(50, bat.getPosition().y));
+	else if (bat.GetShapePosition().left + bat.GetShapePosition().width > (float) window.getSize().x) {
+        bat.SetPosition(sf::Vector2f(50, bat.GetPosition().y));
 	}
 }
