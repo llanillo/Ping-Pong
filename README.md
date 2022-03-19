@@ -15,10 +15,13 @@ SFML/C++ ping pong game.
 Requirements: 
 * Visual C++ 15 (2017) - 32-bit
 * SFML version 2.5.1 - 32/64 bits version
+* Only support 1920x1080 screen
 
 ```bash
 $ git clone https://github.com/llanillo/Ping_Pong
 ```
+
+Follow [SFML Official Guide](https://www.sfml-dev.org/tutorials/2.5/start-vc.php) to use it with Visual Studio
 
 ## To do list
 * Add sound effects
