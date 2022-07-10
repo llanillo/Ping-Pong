@@ -1,5 +1,5 @@
 # Ping Pong Game
-SFML/C++ ping pong game.
+Ping pong game made with SFML/C++.
 
 ### What is SFML?
 
@@ -15,7 +15,7 @@ SFML/C++ ping pong game.
 Requirements: 
 * Visual C++ 15 (2017) - 32-bit
 * SFML version 2.5.1 - 32/64 bits version
-* Only support 1920x1080 screen
+* 1920x1080 screen
 
 ```bash
 git clone https://github.com/llanillo/Ping_Pong
