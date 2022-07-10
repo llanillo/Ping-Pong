@@ -1,4 +1,4 @@
-#include "Ball.h"
+#include "Actor/Ball/Ball.h"
 
 Ball::Ball(float startX, float startY) {
     SetPosition(sf::Vector2f(startX, startY));

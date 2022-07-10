@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Actor/Ball/Ball.h"
-#include "Actor/Player/Bat/Bat.h"
+#include "Actor/Player/Bat.h"
 
 void HandlePlayerInput(Bat& bat);
 void HandleBatCollision(Bat& bat, const sf::Window& window, const sf::Time& deltaTime);
@@ -19,10 +19,10 @@ int main()
 	bool paused = true;
 
 	// Create video-mode
-	sf::VideoMode videoMode(1920, 1080);
+	sf::VideoMode videoMode(1920, 1000);
 
 	//Create and open window
-	sf::RenderWindow window(videoMode, "Pong", sf::Style::Fullscreen);	
+	sf::RenderWindow window(videoMode, "Pong", sf::Style::Titlebar);
 
 	// Create a bat at the bottom center of the screen
 	Bat bat(1920 / 2.0f, 1050);

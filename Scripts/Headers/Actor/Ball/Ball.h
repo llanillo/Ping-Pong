@@ -13,7 +13,7 @@ public:
 
     void ReboundSides();
     void ReboundBat(int score);
-    void ReboundTop();
+    void ReboundTop();        
     void ReboundBottom();
     void RestartBall();
 

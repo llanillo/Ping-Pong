@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "../../Interface/Actor.h"
+#include "../Interface/Actor.h"
 
 class Bat : public Actor{
 
